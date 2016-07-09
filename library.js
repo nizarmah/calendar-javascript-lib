@@ -6,8 +6,9 @@ function Calendar(id, size, labelSettings, colors) {
 
   months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]
   label = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
-  
+
   this.months = months;
+
   this.label = [];
   this.labels = []; 
   for (var i = 0; i < 7; i++)
@@ -32,9 +33,9 @@ function Calendar(id, size, labelSettings, colors) {
   previousLastDay = new Date((this.date.getMonth() < 0) ? this.date.getFullYear() - 1 : this.date.getFullYear(), (this.date.getMonth() < 0) ? 11 : this.date.getMonth(), 0).getDate();
 
   if (firstDay != 0)
-    for (i = 1, j = previousLastDay; i <= firstDay; i++, j--) {
-      document.getElementById(this.id + '-day-num-' + (this.label.indexOf(label[firstDay]) - i + 1)).innerHTML = j;
-      document.getElementById(this.id + '-day-' + (this.label.indexOf(label[firstDay]) - i + 1)).className = this.id + " day diluted";
+    for (i = 0, j = previousLastDay; i < this.label.indexOf(label[firstDay]); i++, j--) {
+      document.getElementById(this.id + '-day-num-' + (1 + i)).innerHTML = j;
+      document.getElementById(this.id + '-day-' + (1 + i)).className = this.id + " day diluted";
     }
   
   for (i = 1; i <= lastDay; i++) {
@@ -66,22 +67,20 @@ Calendar.prototype.redraw = function () {
   previousLastDay = new Date((this.date.getMonth() < 0) ? this.date.getFullYear() - 1 : this.date.getFullYear(), (this.date.getMonth() < 0) ? 11 : this.date.getMonth(), 0).getDate();
 
   if (firstDay != 0)
-    for (i = 1, j = previousLastDay; i <= firstDay; i++, j--) {
-      document.getElementById(this.id + '-day-num-' + (this.label.indexOf(label[firstDay]) - i + 1)).innerHTML = j;
-      document.getElementById(this.id + '-day-' + (this.label.indexOf(label[firstDay]) - i + 1)).className = this.id + " day diluted";
-      document.getElementById(this.id + '-day-radio-' + (this.label.indexOf(label[firstDay]) - i + 1)).checked = false;
+    for (i = 0, j = previousLastDay; i < this.label.indexOf(label[firstDay]); i++, j--) {
+      document.getElementById(this.id + '-day-num-' + (1 + i)).innerHTML = j;
+      document.getElementById(this.id + '-day-' + (1 + i)).className = this.id + " day diluted";
     }
-
-  for (i = lastDay + 1, j = 1; (this.label.indexOf(label[firstDay]) + i) <= 42; i++, j++) {
-    document.getElementById(this.id + '-day-num-' + (this.label.indexOf(label[firstDay]) + i)).innerHTML = j;
-    document.getElementById(this.id + '-day-' + (this.label.indexOf(label[firstDay]) + i)).className = this.id + " day diluted";
-    document.getElementById(this.id + '-day-radio-' + (this.label.indexOf(label[firstDay]) + i)).checked = false;
-  }
 
   for (i = 1; i <= lastDay; i++) {
     document.getElementById(this.id + '-day-num-' + (this.label.indexOf(label[firstDay]) + i)).innerHTML = i;
     if (i == this.date.getDate())
       document.getElementById(this.id + '-day-radio-' + (this.label.indexOf(label[firstDay]) + i)).checked = true;
+  }
+
+  for (i = lastDay + 1, j = 1; (this.label.indexOf(label[firstDay]) + i) <= 42; i++, j++) {
+    document.getElementById(this.id + '-day-num-' + (this.label.indexOf(label[firstDay]) + i)).innerHTML = j;
+    document.getElementById(this.id + '-day-' + (this.label.indexOf(label[firstDay]) + i)).className = this.id + " day diluted";
   }
 }
 
