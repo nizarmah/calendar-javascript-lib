@@ -129,4 +129,7 @@ Next and back are only used with sliders. So just the second parameter is needed
 The only clicklisteners can be set to ```'day-slider', 'month-slider', 'year-slider', 'day-blocks'```.
 I haven't tried passing null for the parameters that I haven't shown as null here. But I doubt that you will need to pass them null since you'll have to show the events.
 
+Well a good demonstration is the ```example.html```
+Or you can check [CodePen] (https://codepen.io/nizarmah/pen/LkjjWV)
+
 Have fun. Later.
