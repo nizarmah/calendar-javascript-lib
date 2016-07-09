@@ -6,9 +6,8 @@ function Calendar(id, size, labelSettings, colors) {
 
   months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]
   label = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
-
+  
   this.months = months;
-
   this.label = [];
   this.labels = []; 
   for (var i = 0; i < 7; i++)
