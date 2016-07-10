@@ -45,7 +45,7 @@ Calendar.prototype.draw = function () {
 
         if (theNames[i] != "labels") {
           backSlider = document.createElement("DIV");
-          backSlider.id = this.id + "-day-back";
+          backSlider.id = this.id + "-year-back";
           backSlider.insertAdjacentHTML('beforeend', backSvg);
           theContainers[i].appendChild(backSlider);
           
@@ -54,7 +54,7 @@ Calendar.prototype.draw = function () {
           theContainers[i].appendChild(theText);
           
           nextSlider = document.createElement("DIV");
-          nextSlider.id = this.id + "-day-next";
+          nextSlider.id = this.id + "-year-next";
           nextSlider.insertAdjacentHTML('beforeend', nextSvg);
           theContainers[i].appendChild(nextSlider);
         }
@@ -63,7 +63,7 @@ Calendar.prototype.draw = function () {
         theContainers[i].style.color = this.colors[2];
 
         backSlider = document.createElement("DIV");
-        backSlider.id = this.id + "-day-back";
+        backSlider.id = this.id + "-month-back";
         backSlider.insertAdjacentHTML('beforeend', backSvg);
         theContainers[i].appendChild(backSlider);
         
@@ -72,7 +72,7 @@ Calendar.prototype.draw = function () {
         theContainers[i].appendChild(theText);
         
         nextSlider = document.createElement("DIV");
-        nextSlider.id = this.id + "-day-next";
+        nextSlider.id = this.id + "-month-next";
         nextSlider.insertAdjacentHTML('beforeend', nextSvg);
         theContainers[i].appendChild(nextSlider);
       }
