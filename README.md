@@ -5,6 +5,8 @@ Well, I suppose I should help you set it up.
 I'd start with the HTML file.
 Just create the containers for each of the calendar and the organizer, in the body, ofcourse.
 ```
+<link href="stylesheet.css" rel="stylesheet" />
+
 <div id="calendarContainer"></div>
 <div id="organizerContainer"></div>
 
