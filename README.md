@@ -129,6 +129,71 @@ Next and back are only used with sliders. So just the second parameter is needed
 The only clicklisteners can be set to ```'day-slider', 'month-slider', 'year-slider', 'day-blocks'```.
 I haven't tried passing null for the parameters that I haven't shown as null here. But I doubt that you will need to pass them null since you'll have to show the events.
 
+So the final javascript code will be
+```
+var calendar = new Calendar("calendarContainer", "small", [ "Wednesday", 3 ], [ "#e91e63", "#c2185b", "#ffffff", "#f8bbd0" ]);
+var organizer = new Organizer("organizerContainer", calendar);
+
+data = {
+  years: [ {
+      int: (new Date().getFullYear()), months: [ {
+          int: (new Date().getMonth() + 1), days: [ {
+              int: (new Date().getDate()), events: [ {
+                  startTime: "6:00",
+                  endTime: "7:00",
+                  mTime: "am",
+                  text: "This is scheduled to show today, anyday."
+                }, {
+                  startTime: "5:45",
+                  endTime: "7:15",
+                  mTime: "pm",
+                  text: "WIP Library"
+                }, {
+                  startTime: "10:00",
+                  endTime: "11:00",
+                  mTime: "pm",
+                  text: "Probably won't fix that (time width)"
+              } ] 
+          } ] 
+      } ]
+  } ] 
+};
+
+function showEvents() {
+  theYear = -1, theMonth = -1, theDay = -1;
+  for (i = 0; i < data.years.length; i++) {
+    if (calendar.date.getFullYear() == data.years[i].int) {
+      theYear = i;
+      break;
+    }
+  }
+  if (theYear == -1) return;
+  for (i = 0; i < data.years[theYear].months.length; i++) {
+    if ((calendar.date.getMonth() + 1) == data.years[theYear].months[i].int) {
+      theMonth = i;
+      break;
+    }
+  }
+  if (theMonth == -1) return;
+  for (i = 0; i < data.years[theYear].months[theMonth].days.length; i++) {
+    if (calendar.date.getDate() == data.years[theYear].months[theMonth].days[i].int) {
+      theDay = i;
+      break;
+    }
+  }
+  if (theDay == -1) return;
+  theEvents = data.years[theYear].months[theMonth].days[theDay].events;  
+  organizer.list(theEvents); // what's responsible for listing
+}
+
+showEvents();
+
+organizer.setOnClickListener('day-slider', function () { showEvents(); console.log("Day back slider clicked"); }, function () { showEvents(); console.log("Day next slider clicked"); });
+organizer.setOnClickListener('days-blocks', function () { showEvents(); console.log("Day block clicked"); }, null);
+organizer.setOnClickListener('month-slider', function () { showEvents(); console.log("Month back slider clicked"); }, function () { showEvents(); console.log("Month next slider clicked"); });
+organizer.setOnClickListener('year-slider', function () { showEvents(); console.log("Year back slider clicked"); }, function () { showEvents(); console.log("Year next slider clicked"); });
+```
+
 Well a good demonstration is the ```example.html```
 Or you can check [CodePen] (https://codepen.io/nizarmah/pen/LkjjWV)
 
