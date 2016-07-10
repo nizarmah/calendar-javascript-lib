@@ -21,7 +21,7 @@ Then, start by creating a calendar object and an organizer object.
 The code will be similar to this
 ```
 var calendar = new Calendar("calendarContainer", "small", [ "Wednesday", 3 ], [ "#e91e63", "#c2185b", "#ffffff", "#f8bbd0" ]);
-var organizer = new Calendar("organizerContainer", calendar);
+var organizer = new Organizer("organizerContainer", calendar);
 ```
 Ok, ok, I'll take it easy and start by explaining each parameter. For the
   * calendar
