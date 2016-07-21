@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>Calendar Javascript Library - Example</title>
+        <link href="stylesheet.css" rel="stylesheet">
     </head>
     <body>
         <style>
@@ -13,6 +14,7 @@
             <div id="eventsContainer" style="margin-left: 8px;"></div>
         </div>
         <p>This is a more of a schedule type calendar for a website. Thought I'd share it here... So made it a library! ( that's why I didn't add an indicator that there's events in a specific day... If you have any suggestion for that though, let me know; I might end up using it )</p>
+        <script src="library.js"></script>
         <script>
             calendar = new Calendar("calendarContainer", "small", [ "Sunday", "3" ], [ "#ffc107", "#ffa000", "#ffffff", "#ffecb3" ]); // calendar container, size, array of first day of the week, and the number of letters for the week days ( max of 3 min of 1 ), colors... i would suggest using materialpalette.com
             organizer = new Organizer("eventsContainer", calendar); // organizer container and the calendar object to associate it to
