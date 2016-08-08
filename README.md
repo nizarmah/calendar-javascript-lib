@@ -4,7 +4,7 @@ Well, I suppose I should help you set it up.
 
 I'd start with the HTML file.
 Just create the containers for each of the calendar and the organizer, in the body, ofcourse.
-```
+```html
 <link href="stylesheet.css" rel="stylesheet" />
 
 <div id="calendarContainer"></div>
@@ -21,7 +21,7 @@ Then, start by creating a calendar object and an organizer object.
     - displaying events
 
 The code will be similar to this
-```
+```js
 var calendar = new Calendar("calendarContainer", "small", [ "Wednesday", 3 ], [ "#e91e63", "#c2185b", "#ffffff", "#f8bbd0" ]);
 var organizer = new Organizer("organizerContainer", calendar);
 ```
@@ -46,7 +46,7 @@ Ok, ok, I'll take it easy and start by explaining each parameter. For the
     - "calendar" -> the calendar object to associate the organizer to, so that it can have the same height and width and set up the listeners of that object
 
 Well now, I'm gonna show you the advised format for the events, making it easier to collect them using JOIN in SQL
-```
+```js
 data = {
   years: [ {
       int: (new Date().getFullYear()), months: [ {
@@ -78,7 +78,7 @@ The ```new Date()``` then the methods connected to it makes these events show to
 
 Ofcourse, after that, we will need to display each day's events.
 Well, I did that by...
-```
+```js
 function showEvents() {
   theYear = -1, theMonth = -1, theDay = -1;
   for (i = 0; i < data.years.length; i++) {
@@ -114,12 +114,12 @@ After deep thinking, I might've left that showing of the events for you because 
 
 Moving away from that don't forget to call that function in order to list the events on calendar load.
 For me I placed it like this, directly after the function. ( also after the calendar and organizer declaration )
-```
+```js
 showEvents();
 ```
 
 Last but not least, time to declare the listeners for the year, month, day sliders and the day blocks on the calendar.
-```
+```js
 organizer.setOnClickListener('day-slider', function () { showEvents(); console.log("Day back slider clicked"); }, function () { showEvents(); console.log("Day next slider clicked"); });
 organizer.setOnClickListener('days-blocks', function () { showEvents(); console.log("Day block clicked"); }, null);
 organizer.setOnClickListener('month-slider', function () { showEvents(); console.log("Month back slider clicked"); }, function () { showEvents(); console.log("Month next slider clicked"); });
@@ -132,7 +132,7 @@ The only clicklisteners can be set to ```'day-slider', 'month-slider', 'year-sli
 I haven't tried passing null for the parameters that I haven't shown as null here. But I doubt that you will need to pass them null since you'll have to show the events.
 
 So the final javascript code will be
-```
+```js
 var calendar = new Calendar("calendarContainer", "small", [ "Wednesday", 3 ], [ "#e91e63", "#c2185b", "#ffffff", "#f8bbd0" ]);
 var organizer = new Organizer("organizerContainer", calendar);
 
