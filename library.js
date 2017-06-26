@@ -145,8 +145,8 @@ Calendar.prototype.update = function () {
 
   if (firstDay != 0)
     for (i = 0, j = previousLastDay; i < this.label.indexOf(label[firstDay]); i++, j--) {
-      document.getElementById(this.id + '-day-num-' + (1 + i)).innerHTML = j;
-      document.getElementById(this.id + '-day-' + (1 + i)).className = this.id + " day diluted";
+      document.getElementById(this.id + '-day-num-' + (this.label.indexOf(label[firstDay]) - i)).innerHTML = j;
+      document.getElementById(this.id + '-day-' + (this.label.indexOf(label[firstDay]) - i)).className = this.id + " day diluted";
     }
 
   for (i = 1; i <= lastDay; i++) {
