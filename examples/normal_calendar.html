@@ -1,0 +1,31 @@
+<html>
+
+	<head>
+		<title>Normal Calendar Example</title>
+		<link href="../calendarorganizer.min.css" rel="stylesheet">
+	</head>
+
+	<body>
+		<div id="calendarContainer"></div>
+		<script src="../calendarorganizer.min.js"></script>
+		<script>
+			"use strict";
+
+			// initializing a new calendar object, that will use an html container to create itself
+			var calendar = new Calendar("calendarContainer", // id of html container for calendar
+				"small", // size of calendar, can be small | medium | large
+				[
+					"Wednesday", // left most day of calendar labels
+					3 // maximum length of the calendar labels
+				],
+				[
+					"#ffc107", // primary color
+					"#ffa000", // primary dark color
+					"#ffffff", // text color
+					"#ffecb3" // text dark color
+				]
+			);
+		</script>
+	</body>
+
+</html>
