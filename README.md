@@ -18,7 +18,7 @@ new Calendar(html container id, size,
             [ starting day, day abbreviation length ],
             [ primary color, primary dark color, text color, text dark color ])
 ```
-> I adivse you to use [MaterialPalette] (http://www.materialpalette.com/pink/purple) to chose the colors
+> I adivse you to use [MaterialPalette](http://www.materialpalette.com/pink/purple) to chose the colors
 
 In addition to those parameters, you have an optional one. This optional one is an object.
 The object can have two things, `months` and `labels`.
