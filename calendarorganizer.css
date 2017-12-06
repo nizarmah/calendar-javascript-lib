@@ -375,7 +375,7 @@
 .calendar.small .day.active::before {
     width: 12px;
     height: 12px;
-    bottom: 7px;
+    top: 7px;
     right: 7px;
 }
 
