@@ -21,9 +21,22 @@ new Calendar(html container id, size,
 > I adivse you to use [MaterialPalette](http://www.materialpalette.com/pink/purple) to chose the colors
 
 In addition to those parameters, you have an optional one. This optional one is an object.
-The object can have two things, `months` and `labels`.
+The object can have three things, `months`, `days`, and `indicator`.
 This can be really helpful when you wish to use a language other than English.
-> When changing the labels, the starting day *must* match one of the labels given. So the library would know how to list those labels onto the calendar. In case you did not change the labels, then it must match one of the days of the week in English, capitalized. ( Monday, Tuesday... )
+
+For example, setting a Spanish Calendar would be the following...
+The indicator *only* works when there is an organizer.
+```js
+new Calendar("calendarContainer", "small",
+            [ "Lunes", 3 ],
+            [ "#ffc107", "#ffa000", "#ffffff", "#ffecb3" ]
+            {
+                days: [ "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo" ],
+                months: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
+                indicator: false
+            })
+```
+> When changing the days, the starting day *must* match one of the days given. So the library would know how to list those days onto the calendar. In case you did not change the days, then it must match one of the days of the week in English, capitalized. ( Monday, Tuesday... )
 
 #### On Click Listeners
 
