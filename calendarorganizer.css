@@ -344,9 +344,15 @@
 
 .day > span {
     width: auto;
+    height: fit-content;
     font-size: 14px;
     color: rgba(21, 21, 21, 0.84);
 }
+    .day.today > span {
+        padding-bottom: 3px;
+        border-bottom: 2px solid;
+        border-radius: 1px;
+    }
 
 .day.diluted {
     background-color: rgba(21, 21, 21, 0.021);
