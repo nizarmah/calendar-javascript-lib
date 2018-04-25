@@ -13,6 +13,13 @@ function Calendar(id, size, labelSettings, colors, options) {
     this.indicator = true;
     if (options.indicator != undefined) this.indicator = options.indicator;
 
+    var listPlaceholder = document.createElement("LI");
+    listPlaceholder.className = "list-placeholder";
+    listPlaceholder.appendChild(document.createTextNode("No events on this day"));
+    
+    this.placeholder = listPlaceholder.outerHTML;
+    if (options.placeholder != undefined) this.placeholder = options.placeholder;
+
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     if (options.months != undefined && options.months.length == 12) months = options.months;
 
@@ -440,21 +447,24 @@ Organizer.prototype.list = function (data) {
         var span = document.createElement("SPAN");
         span.id = this.id + "-list-item-" + i + "-time";
         span.class = this.id + " time";
-        span.append(document.createTextNode(data[i].startTime + ' - ' + data[i].endTime));
+        span.appendChild(document.createTextNode(data[i].startTime + ' - ' + data[i].endTime));
 
-        division.append(span);
+        division.appendChild(span);
 
         var paragraph = document.createElement("P");
         paragraph.id = this.id + "-list-item-" + i + "-text";
-        paragraph.append(document.createTextNode(data[i].text));
+        paragraph.appendChild(document.createTextNode(data[i].text));
 
-        listItem.append(division);
-        listItem.append(paragraph);
+        listItem.appendChild(division);
+        listItem.appendChild(paragraph);
 
-        content.append(listItem);
+        content.appendChild(listItem);
     }
 
     document.getElementById(this.id + "-list").innerHTML = content.innerHTML;
+
+    if (data.length == 0)
+        this.showPlaceholder();
 };
 
 Organizer.prototype.setupBlock = function (blockId, organizerInstance, callback) {
@@ -474,8 +484,14 @@ Organizer.prototype.showEvents = function (data) {
 
     try {
         this.list(data[date.getFullYear()][date.getMonth() + 1][date.getDate()]);
-    } catch (e) {}
+    } catch (e) {
+        this.showPlaceholder();
+    }
 };
+
+Organizer.prototype.showPlaceholder = function (data) {
+    document.getElementById(this.id + "-list").innerHTML = this.calendar.placeholder;
+}
 
 Organizer.prototype.indicateEvents = function (data) {
     data = data || this.data;
