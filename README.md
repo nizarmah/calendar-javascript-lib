@@ -34,8 +34,8 @@ new Calendar("calendarContainer", "small",
                 days: [ "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo" ],
                 months: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
                 indicator: false,
-                placeholder: "<span>Custom Placeholder</span>
-            })
+                placeholder: "<span>Custom Placeholder</span>"
+            })
 ```
 > When changing the days, the starting day *must* match one of the days given. So the library would know how to list those days onto the calendar. In case you did not change the days, then it must match one of the days of the week in English, capitalized. ( Monday, Tuesday... )
 
