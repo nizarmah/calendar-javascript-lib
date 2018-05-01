@@ -33,10 +33,12 @@ There are multiple ways to install the calendar library
 </body>
 ```
 
-* Via download and/or self-hosting
+* Via download and self-hosting:
 Download the [minified JavaScript file][js-minified-download] and [minified CSS file][css-minified-download]
 ```html
+<link href="calendarorganizer.min.css" rel="stylesheet" />
 
+<script src="calendarorganizer.min.js"></script>
 ```
 
 ### Calendar Object
