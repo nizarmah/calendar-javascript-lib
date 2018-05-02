@@ -1,4 +1,4 @@
-# 📅JS Calendar Library
+# 📅 JS Calendar Library
 [![License][license-badge]][license-badge-url]
 
 > Simple, lightweight, stylish calendar + organizer JavaScript Library
