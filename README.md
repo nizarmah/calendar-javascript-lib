@@ -1,19 +1,20 @@
 # 📅JS Calendar Library
-<!--[![License][license-badge]][license-badge-url]-->
+[![License][license-badge]][license-badge-url]
 
 > Simple, lightweight, stylish calendar + organizer JavaScript Library
 
 [Installation](#-install) &mdash;
-[Usage](#-usage) &mdash;
+[Basic Usage](#-basic-usage) &mdash;
 [Examples](#-examples) &mdash;
+[Doc](#-doc) &mdash;
 [Screenshots](#-screenshots)
 
-### 🌏 Browser Support
+## 🌏 Browser Support
 | <img src="https://user-images.githubusercontent.com/1215767/34348387-a2e64588-ea4d-11e7-8267-a43365103afe.png" alt="Chrome" width="16px" height="16px" /> Chrome | <img src="https://user-images.githubusercontent.com/1215767/34348590-250b3ca2-ea4f-11e7-9efb-da953359321f.png" alt="IE" width="16px" height="16px" /> Internet Explorer | <img src="https://user-images.githubusercontent.com/1215767/34348380-93e77ae8-ea4d-11e7-8696-9a989ddbbbf5.png" alt="Edge" width="16px" height="16px" /> Edge | <img src="https://user-images.githubusercontent.com/1215767/34348394-a981f892-ea4d-11e7-9156-d128d58386b9.png" alt="Safari" width="16px" height="16px" /> Safari | <img src="https://user-images.githubusercontent.com/1215767/34348383-9e7ed492-ea4d-11e7-910c-03b39d52f496.png" alt="Firefox" width="16px" height="16px" /> Firefox |
 | :---------: | :---------: | :---------: | :---------: | :---------: |
 | Yes | 10+ | Yes | Yes | Yes |
 
-### 💾 Install
+## 💾 Install
 
 There are multiple ways to install the calendar library
 
@@ -36,74 +37,111 @@ There are multiple ways to install the calendar library
 * Via download and self-hosting:
 Download the [minified JavaScript file][js-minified-download] and [minified CSS file][css-minified-download]
 ```html
+<!-- Insert in <head> -->
 <link href="calendarorganizer.min.css" rel="stylesheet" />
 
+<!-- Insert before you own <script> tag-->
 <script src="calendarorganizer.min.js"></script>
 ```
 
+## 🔨 Basic Usage
+### HTML
+Place 2 `<div>`'s where you want the calendar to be placed
+
+```html
+<body>
+...
+<div id="calendarContainer"></div>
+<div id="organizerContainer"></div>
+...
+</body>
+```
+
+### JavaScript
+```javascript
+// Basic config
+var calendar = new Calendar("calendarContainer", "small",
+                            [ "Monday", 3 ],
+                            [ "#ffc107", "#ffa000", "#ffffff", "#ffecb3" ]
+                            {
+                                days: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",  Saturday" ],
+                                months: [ "January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
+                                indicator: false,
+                                placeholder: "<span>Custom Placeholder</span>"
+                            });
+
+var data = {
+            2017: {
+                12: {
+                    25: [
+                        {
+                            startTime: "00:00",
+                            endTime: "24:00",
+                            text: "Christmas Day"
+                        }
+                    ]
+                }
+            };
+
+var organizer = new Organizer("organizerContainer", calendar, data);
+```
+> Want to know how to customize your data? [Check out the docs](#-doc)
+
+## 📓 Doc
+
 ### Calendar Object
 
-The calendar object has 4 required fields and one optional one.
-The calendar object is called `Calendar`, nothing too fancy.
+The calendar item, used to display days, months, and years
 
-To initialize a calendar, you must fill some parameters. Those parameters are the following:
-```js
-new Calendar(html container id, size,
-            [ starting day, day abbreviation length ],
-            [ primary color, primary dark color, text color, text dark color ])
+```javascript
+var calendar = new Calendar("calendarContainer", // HTML container ID,                        Required
+                            "small",             // Size: (small, medium, large)              Required
+                            ["Sunday", 3],       // [ Starting day, day abbreviation length ] Required
+                            [ "#ffc107",         // Primary Color                             Required
+                              "#ffa000",         // Primary Dark Color                        Required
+                              "#ffffff",         // Text Color                                Required
+                              "#ffecb3" ],       // Text Dark Color                           Required
+                            
+                            // Following is optional
+                            {
+                                days: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",  Saturday" ],
+                                months: [ "January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
+                                indicator: false,
+                                placeholder: "<span>Custom Placeholder</span>"
+                            });
 ```
-> I adivse you to use [MaterialPalette](http://www.materialpalette.com/pink/purple) to chose the colors
+> When changing days, the starting day *must* match one of the days given
 
-In addition to those parameters, you have an optional one. This optional one is an object.
-The object can have three things, `months`, `days`, and `indicator`.
-This can be really helpful when you wish to use a language other than English.
-
-For example, setting a Spanish Calendar would be the following...
-The indicator *only* works when there is an organizer.
-```js
-new Calendar("calendarContainer", "small",
-            [ "Lunes", 3 ],
-            [ "#ffc107", "#ffa000", "#ffffff", "#ffecb3" ]
-            {
-                days: [ "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo" ],
-                months: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
-                indicator: false,
-                placeholder: "<span>Custom Placeholder</span>"
-            })
-```
-> When changing the days, the starting day *must* match one of the days given. So the library would know how to list those days onto the calendar. In case you did not change the days, then it must match one of the days of the week in English, capitalized. ( Monday, Tuesday... )
-
-> If you don't understand the placeholder, open the examples and check `custom_placeholder_organizer.html`
-
-#### On Click Listeners
-
-> Use the Organizer's On Click Listeners if you *are using* an Organizer, meaning you have initialized an Organizer object. If you aren't using an Organizer, then use these On Click Listeners
-
-You can set on click listeners to the items in case you want the calendar to do some extra stuff!
-To do that, assume that you have a `var calendar` initialized. You'll have to do the following:
-```js
-// The Days Blocks Click Listener!
+#### Calendar OnClickListeners
+> If you are using the organizer, please use the [Organizer OnClickListener](#organizer-onclicklisteners). If not, use the following
+```javascript
+// Days Block click listener
 calendar.setOnClickListener('days-blocks',
+    // Called when a day block is clicked
     function () {
         console.log("Day block clicked");
     }
 );
 
-// The Months Slider Left and Right Arrows Click Listeners!
+// Month Slider (Left and Right Arrow) Click Listeners
 calendar.setOnClickListener('month-slider',
+    // Called when the month left arrow is clicked
     function () {
         console.log("Month back slider clicked");
     },
+    // Called when the month right arrow is clicked
     function () {
         console.log("Month next slider clicked");
     }
 );
 
-// The Years Slider Left and Right Arrows Click Listeners!
+// Year Slider (Left and Right Arrow) Click Listeners
 calendar.setOnClickListener('year-slider',
+    // Called when the year left arrow is clicked
     function () {
         console.log("Year back slider clicked");
     },
+    // Called when the year right arrow is clicked
     function () {
         console.log("Year next slider clicked");
     }
@@ -112,34 +150,26 @@ calendar.setOnClickListener('year-slider',
 
 ### Organizer Object
 
-The calendar object has 3 fields.
-The calendar object is called `Organizer`, also not special.
+The organizer object, used to display events
 
-To initialize an organizer, you also must fill some parameters, which are:
-```js
-new Organizer(html container id, calendar, data)
+```javascript
+var organizer = new Organizer("organizerContainer", // Organizer container id                      Required
+                              calendar,             // Calendar item                               Required
+                              data);                // Events data (Must follow specified format)  Required
 ```
 
-#### Object Formats
-
-##### Event Format
-
-An event is an `object`. It must have 3 keys, starting time, ending time, and the text.
-For example, we'll be creating a Christmas Event. However, we won't specify a date, yet.
-```js
+#### Event Format
+```javascript
 {
     startTime: "00:00",
     endTime: "24:00",
-    text: "Christmas"
+    text: "Christmas Day"
 }
 ```
-> Since the starting and ending time are strings, you don't have to use 24 hour clocks. You can just use "12:00 am" and "12:00 am", instead of "00:00" and "24:00".
+> Since starting and ending time are strings, 24 hour time is not required. You can just use "12:00am" and "12:00pm" instead of "00:00" and "24:00"
 
-##### Data Format
-
-The data is of type `object`. It must be formatted in a specific way.
-The data must be of the following form.
-```js
+#### Data Format
+```javascript
 {
     year: {
         month: {
@@ -147,19 +177,24 @@ The data must be of the following form.
         }
     }
 }
-```
 
-For example, you can use the following data that will display a single event...
-Just a heads up, it will indicate Christmas, using the previous event we created.
-```js
-data = {
+// Example
+var data = {
+    // December 25, 2017
     2017: {
         12: {
             25: [
+                // Christmas Day
                 {
                     startTime: "00:00",
                     endTime: "24:00",
-                    text: "Christmas"
+                    text: "Christmas Day"
+                },
+                // Christmas Dinner
+                {
+                    startTime: "5:00pm",
+                    endTime: "11:00pm",
+                    text: "Christmas Dinner"
                 }
             ]
         }
@@ -167,16 +202,48 @@ data = {
 }
 ```
 
-#### Using Ajax for Data
+#### Organizer OnClickListener
+> Do not use this if `organizer` is not declared. Use the [Calendar OnClickListeners](#calendar-onclicklisteners) instead
 
-Now, many want to use a library without having to have static data, and save all the data in the memory at once.
-For that, there is a function called `onMonthChange`. This will help store only a single month of events.
+```javascript
+// Days Block click listener
+organizer.setOnClickListener('days-blocks',
+    // Called when a day block is clicked
+    function () {
+        console.log("Day block clicked");
+    }
+);
 
-This is much better than having content update when the day is changed. That way you have less delay, and less requests on a server.
+// Month Slider (Left and Right Arrow) Click Listeners
+organizer.setOnClickListener('month-slider',
+    // Called when the month left arrow is clicked
+    function () {
+        console.log("Month back slider clicked");
+    },
+    // Called when the month right arrow is clicked
+    function () {
+        console.log("Month next slider clicked");
+    }
+);
 
-Overwriting the `onMonthChange` method is very simple. However, you must remember adding the `callback` to it, or else, the library would not work as desired.
-Assume we have a `var organizer` initialized... Then we'll do the following:
-```js
+// Year Slider (Left and Right Arrow) Click Listeners
+organizer.setOnClickListener('year-slider',
+    // Called when the year left arrow is clicked
+    function () {
+        console.log("Year back slider clicked");
+    },
+    // Called when the year right arrow is clicked
+    function () {
+        console.log("Year next slider clicked");
+    }
+);
+```
+
+## Examples
+### Using Ajax
+Want to retrieve your events from an API? Use the `onMonthChange` function to dynamically add dates
+
+```javascript
 organizer.onMonthChange = function (callback) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -194,307 +261,11 @@ organizer.onMonthChange = function (callback) {
     xhttp.send();
 };
 ```
-> For a better demonstration of how to create this function, check out *ajax_organizer.html* in the examples folder. Even though it does not use an ajax example, it demonstrates clearly how the ajax would work.
-
-#### On Click Listeners
-
-> Use the Calendar's On Click Listeners if you *do not* have an Organizer initialized. If you are using an Organizer, then use these On Click Listeners
-> Organizer On Click Listeners *overwrite* the Calendar's On Click Listeners, this is why you should use those when using an organizer.
-
-You can set on click listeners to the items in case you want the calendar to do some extra stuff!
-To do that, assume that you have a `var calendar` initialized. You'll have to do the following:
-
-```js
-// The Days Blocks Click Listener!
-organizer.setOnClickListener('days-blocks',
-    function () {
-        console.log("Day block clicked");
-    }
-);
-
-// The Days Slider Left and Right Arrows Click Listeners!
-organizer.setOnClickListener('day-slider',
-    function () {
-        console.log("Day back slider clicked");
-    },
-    function () {
-        console.log("Day next slider clicked");
-    }
-);
-);
-
-// The Months Slider Left and Right Arrows Click Listeners!
-organizer.setOnClickListener('month-slider',
-    function () {
-        console.log("Month back slider clicked");
-    },
-    function () {
-        console.log("Month next slider clicked");
-    }
-);
-
-// The Years Slider Left and Right Arrows Click Listeners!
-organizer.setOnClickListener('year-slider',
-    function () {
-        console.log("Year back slider clicked");
-    },
-    function () {
-        console.log("Year next slider clicked");
-    }
-);
-```
-
-## HTML Content
-
-```html
-<html>
-    <head>
-        <link href="calendarorganizer.min.css" rel="stylesheet" />
-    </head>
-    <body>
-        <div id="calendarContainer"></div>
-        <div id="organizerContainer"></div>
-
-        <script src="calendarorganizer.min.js"></script>
-        <script>
-            /* TODO : Fill this yourself ;) */
-        </script>
-    </body>
-</html>
-```
-
-This is a calendar + organizer javascript library; with some material design in mind.
-For more examples, you can check out the `examples` folder.
-
-## Objects and Declarations
-
-First of all, let us explain the objects, and what they can do.
-
-### Calendar Object
-
-The calendar object has 4 required fields and one optional one.
-The calendar object is called `Calendar`, nothing too fancy.
-
-To initialize a calendar, you must fill some parameters. Those parameters are the following:
-```js
-new Calendar(html container id, size,
-            [ starting day, day abbreviation length ],
-            [ primary color, primary dark color, text color, text dark color ])
-```
-> I adivse you to use [MaterialPalette](http://www.materialpalette.com/pink/purple) to chose the colors
-
-In addition to those parameters, you have an optional one. This optional one is an object.
-The object can have three things, `months`, `days`, and `indicator`.
-This can be really helpful when you wish to use a language other than English.
-
-For example, setting a Spanish Calendar would be the following...
-The indicator *only* works when there is an organizer.
-```js
-new Calendar("calendarContainer", "small",
-            [ "Lunes", 3 ],
-            [ "#ffc107", "#ffa000", "#ffffff", "#ffecb3" ]
-            {
-                days: [ "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo" ],
-                months: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
-                indicator: false,
-                placeholder: "<span>Custom Placeholder</span>"
-            })
-```
-> When changing the days, the starting day *must* match one of the days given. So the library would know how to list those days onto the calendar. In case you did not change the days, then it must match one of the days of the week in English, capitalized. ( Monday, Tuesday... )
-
-> If you don't understand the placeholder, open the examples and check `custom_placeholder_organizer.html`
-
-#### On Click Listeners
-
-> Use the Organizer's On Click Listeners if you *are using* an Organizer, meaning you have initialized an Organizer object. If you aren't using an Organizer, then use these On Click Listeners
-
-You can set on click listeners to the items in case you want the calendar to do some extra stuff!
-To do that, assume that you have a `var calendar` initialized. You'll have to do the following:
-```js
-// The Days Blocks Click Listener!
-calendar.setOnClickListener('days-blocks',
-    function () {
-        console.log("Day block clicked");
-    }
-);
-
-// The Months Slider Left and Right Arrows Click Listeners!
-calendar.setOnClickListener('month-slider',
-    function () {
-        console.log("Month back slider clicked");
-    },
-    function () {
-        console.log("Month next slider clicked");
-    }
-);
-
-// The Years Slider Left and Right Arrows Click Listeners!
-calendar.setOnClickListener('year-slider',
-    function () {
-        console.log("Year back slider clicked");
-    },
-    function () {
-        console.log("Year next slider clicked");
-    }
-);
-```
-
-### Organizer Object
-
-The calendar object has 3 fields.
-The calendar object is called `Organizer`, also not special.
-
-To initialize an organizer, you also must fill some parameters, which are:
-```js
-new Organizer(html container id, calendar, data)
-```
-
-#### Object Formats
-
-##### Event Format
-
-An event is an `object`. It must have 3 keys, starting time, ending time, and the text.
-For example, we'll be creating a Christmas Event. However, we won't specify a date, yet.
-```js
-{
-    startTime: "00:00",
-    endTime: "24:00",
-    text: "Christmas"
-}
-```
-> Since the starting and ending time are strings, you don't have to use 24 hour clocks. You can just use "12:00 am" and "12:00 am", instead of "00:00" and "24:00".
-
-##### Data Format
-
-The data is of type `object`. It must be formatted in a specific way.
-The data must be of the following form.
-```js
-{
-    year: {
-        month: {
-            day: [ events ]
-        }
-    }
-}
-```
-
-For example, you can use the following data that will display a single event...
-Just a heads up, it will indicate Christmas, using the previous event we created.
-```js
-data = {
-    2017: {
-        12: {
-            25: [
-                {
-                    startTime: "00:00",
-                    endTime: "24:00",
-                    text: "Christmas"
-                }
-            ]
-        }
-    }
-}
-```
-
-#### Using Ajax for Data
-
-Now, many want to use a library without having to have static data, and save all the data in the memory at once.
-For that, there is a function called `onMonthChange`. This will help store only a single month of events.
-
-This is much better than having content update when the day is changed. That way you have less delay, and less requests on a server.
-
-Overwriting the `onMonthChange` method is very simple. However, you must remember adding the `callback` to it, or else, the library would not work as desired.
-Assume we have a `var organizer` initialized... Then we'll do the following:
-```js
-organizer.onMonthChange = function (callback) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            // TODO : Change the Organizer's Data to the new Data
-            // TODO : that you just grabbed from the Ajax Request
-
-            organizer.data = this.responseText;
-
-            // TODO : Call the Callback to display the Data
-            callback();
-        }
-    };
-    xhttp.open("GET", "someurl.json", true);
-    xhttp.send();
-};
-```
-> For a better demonstration of how to create this function, check out *ajax_organizer.html* in the examples folder. Even though it does not use an ajax example, it demonstrates clearly how the ajax would work.
-
-#### On Click Listeners
-
-> Use the Calendar's On Click Listeners if you *do not* have an Organizer initialized. If you are using an Organizer, then use these On Click Listeners
-> Organizer On Click Listeners *overwrite* the Calendar's On Click Listeners, this is why you should use those when using an organizer.
-
-You can set on click listeners to the items in case you want the calendar to do some extra stuff!
-To do that, assume that you have a `var calendar` initialized. You'll have to do the following:
-
-```js
-// The Days Blocks Click Listener!
-organizer.setOnClickListener('days-blocks',
-    function () {
-        console.log("Day block clicked");
-    }
-);
-
-// The Days Slider Left and Right Arrows Click Listeners!
-organizer.setOnClickListener('day-slider',
-    function () {
-        console.log("Day back slider clicked");
-    },
-    function () {
-        console.log("Day next slider clicked");
-    }
-);
-);
-
-// The Months Slider Left and Right Arrows Click Listeners!
-organizer.setOnClickListener('month-slider',
-    function () {
-        console.log("Month back slider clicked");
-    },
-    function () {
-        console.log("Month next slider clicked");
-    }
-);
-
-// The Years Slider Left and Right Arrows Click Listeners!
-organizer.setOnClickListener('year-slider',
-    function () {
-        console.log("Year back slider clicked");
-    },
-    function () {
-        console.log("Year next slider clicked");
-    }
-);
-```
-
-## HTML Content
-
-```html
-<html>
-    <head>
-        <link href="calendarorganizer.min.css" rel="stylesheet" />
-    </head>
-    <body>
-        <div id="calendarContainer"></div>
-        <div id="organizerContainer"></div>
-
-        <script src="calendarorganizer.min.js"></script>
-        <script>
-            /* TODO : Fill this yourself ;) */
-        </script>
-    </body>
-</html>
-```
+> Check out *ajax_organizer.html* in the examples folder for a better demonstration
 
 [js-minified-download]: https://raw.githubusercontent.com/nizarmah/calendar-javascript-lib/master/calendarorganizer.min.js
 [css-minified-download]: https://raw.githubusercontent.com/nizarmah/calendar-javascript-lib/master/calendarorganizer.min.css
-<!--
+
+
 [license-badge]: https://img.shields.io/npm/l/three.svg
 [license-badge-url]: ./LICENSE
--->
