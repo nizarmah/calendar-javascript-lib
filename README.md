@@ -263,6 +263,9 @@ organizer.onMonthChange = function (callback) {
 ```
 > Check out *ajax_organizer.html* in the examples folder for a better demonstration
 
+## 🖼️ Screenshots
+![Screenshot of calendar](./assets/screenshot1.png)
+
 [js-minified-download]: https://raw.githubusercontent.com/nizarmah/calendar-javascript-lib/master/calendarorganizer.min.js
 [css-minified-download]: https://raw.githubusercontent.com/nizarmah/calendar-javascript-lib/master/calendarorganizer.min.css
 
