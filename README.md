@@ -104,7 +104,7 @@ var calendar = new Calendar("calendarContainer", // HTML container ID,          
                             
                             // Following is optional
                             {
-                                days: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",  Saturday" ],
+                                days: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",  "Saturday" ],
                                 months: [ "January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
                                 indicator: false,
                                 placeholder: "<span>Custom Placeholder</span>"
