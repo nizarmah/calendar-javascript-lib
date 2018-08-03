@@ -24,6 +24,8 @@ function Calendar(id, size, labelSettings, colors, options) {
     if (options.months != undefined && options.months.length == 12) months = options.months;
 
     var label = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    this.defaultLabels = label;
+
     if (options.days != undefined && options.days.length == 7) label = options.days;
 
     this.months = months;
@@ -36,6 +38,8 @@ function Calendar(id, size, labelSettings, colors, options) {
     for (var i = 0; i < 7; i++) {
         this.labels.push(this.label[i].substring(0, labelSettings[1] > 3 ? 3 : labelSettings[1]));
     }
+    console.log(this.label);
+    console.log(this.labels);
 
     this.date = new Date();
     this.today = new Date();
@@ -223,25 +227,28 @@ Calendar.prototype.update = function () {
 
     var previousLastDay = new Date(this.date.getMonth() < 0 ? this.date.getFullYear() - 1 : this.date.getFullYear(), this.date.getMonth() < 0 ? 11 : this.date.getMonth(), 0).getDate();
 
-    this.initday = this.label.indexOf(this.label[firstDay]);
+    this.initday = this.label.indexOf(this.defaultLabels[firstDay]);
 
-    for (var i = 0, j = previousLastDay; i < this.label.indexOf(this.label[firstDay]); i++, j--) {
-        document.getElementById(this.id + '-day-num-' + (this.label.indexOf(this.label[firstDay]) - i)).innerHTML = j;
-        document.getElementById(this.id + '-day-' + (this.label.indexOf(this.label[firstDay]) - i)).className = this.id + " day diluted";
+    var firstDayLabel = this.defaultLabels[firstDay];
+    var firstDayLabelPos = this.label.indexOf(firstDayLabel);
+
+    for (var i = 0, j = previousLastDay; i < firstDayLabelPos; i++, j--) {
+        document.getElementById(this.id + '-day-num-' + (firstDayLabelPos - i)).innerHTML = j;
+        document.getElementById(this.id + '-day-' + (firstDayLabelPos - i)).className = this.id + " day diluted";
     }
 
     for (var i = 1; i <= lastDay; i++) {
-        document.getElementById(this.id + '-day-num-' + (this.label.indexOf(this.label[firstDay]) + i)).innerHTML = i;
+        document.getElementById(this.id + '-day-num-' + (firstDayLabelPos + i)).innerHTML = i;
 
-        if (i == this.date.getDate()) document.getElementById(this.id + '-day-radio-' + (this.label.indexOf(this.label[firstDay]) + i)).checked = true;
+        if (i == this.date.getDate()) document.getElementById(this.id + '-day-radio-' + (firstDayLabelPos + i)).checked = true;
 
         if (this.date.getMonth() == this.today.getMonth())
-            if (i == this.today.getDate()) document.getElementById(this.id + '-day-' + (this.label.indexOf(this.label[firstDay]) + i)).className += " today";
+            if (i == this.today.getDate()) document.getElementById(this.id + '-day-' + (firstDayLabelPos + i)).className += " today";
     }
 
-    for (var i = lastDay + 1, j = 1; this.label.indexOf(this.label[firstDay]) + i <= 42; i++, j++) {
-        document.getElementById(this.id + '-day-num-' + (this.label.indexOf(this.label[firstDay]) + i)).innerHTML = j;
-        document.getElementById(this.id + '-day-' + (this.label.indexOf(this.label[firstDay]) + i)).className = this.id + " day diluted";
+    for (var i = lastDay + 1, j = 1; firstDayLabelPos + i <= 42; i++, j++) {
+        document.getElementById(this.id + '-day-num-' + (firstDayLabelPos + i)).innerHTML = j;
+        document.getElementById(this.id + '-day-' + (firstDayLabelPos + i)).className = this.id + " day diluted";
     }
 };
 
