@@ -22,12 +22,12 @@ There are multiple ways to install the calendar library
 <!-- Replace the link with rawgit.com CDN link -->
 ```html
 <head>
-    <link href="https://raw.githubusercontent.com/nizarmah/calendar-javascript-lib/master/calendarorganizer.min.css" rel="stylesheet" />
+    <link href="https://cdn.rawgit.com/nizarmah/calendar-javascript-lib/master/calendarorganizer.min.css" rel="stylesheet" />
 </head>
 
 <body>
     <!-- Stick script at the end of the body -->
-    <script src="https://raw.githubusercontent.com/nizarmah/calendar-javascript-lib/master/calendarorganizer.min.js"></script>
+    <script src="https://cdn.rawgit.com/nizarmah/calendar-javascript-lib/master/calendarorganizer.min.js"></script>
     <script>
         /* Fill with whatever your dreams desire */
     </script>
@@ -266,8 +266,8 @@ organizer.onMonthChange = function (callback) {
 ## 🖼️ Screenshots
 ![Screenshot of calendar](./assets/screenshot1.png)
 
-[js-minified-download]: https://raw.githubusercontent.com/nizarmah/calendar-javascript-lib/master/calendarorganizer.min.js
-[css-minified-download]: https://raw.githubusercontent.com/nizarmah/calendar-javascript-lib/master/calendarorganizer.min.css
+[js-minified-download]: https://cdn.rawgit.com/nizarmah/calendar-javascript-lib/master/calendarorganizer.min.js
+[css-minified-download]: https://cdn.rawgit.com/nizarmah/calendar-javascript-lib/master/calendarorganizer.min.css
 
 
 [license-badge]: https://img.shields.io/npm/l/three.svg
