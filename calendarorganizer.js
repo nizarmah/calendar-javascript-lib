@@ -13,8 +13,14 @@ function Calendar(id, size, labelSettings, colors, options) {
     this.indicator = true;
     if (options.indicator != undefined) this.indicator = options.indicator;
 
+    this.indicator_type = 1;
+    if (options.indicator_type != undefined) this.indicator_type = options.indicator_type;
+
+    this.indicator_pos  = (this.indicator_type == 1) ? "bottom" : "top";
+    if (options.indicator_pos != undefined) this.indicator_pos = options.indicator_pos;
+
     var listPlaceholder = document.createElement("LI");
-    listPlaceholder.className = "list-placeholder";
+    listPlaceholder.className = "cjslib-list-placeholder";
     listPlaceholder.appendChild(document.createTextNode("No events on this day"));
     
     this.placeholder = listPlaceholder.outerHTML;
@@ -38,8 +44,6 @@ function Calendar(id, size, labelSettings, colors, options) {
     for (var i = 0; i < 7; i++) {
         this.labels.push(this.label[i].substring(0, labelSettings[1] > 3 ? 3 : labelSettings[1]));
     }
-    console.log(this.label);
-    console.log(this.labels);
 
     this.date = new Date();
     this.today = new Date();
@@ -109,7 +113,7 @@ Calendar.prototype.draw = function () {
     var nextSvg = '<svg style="width: 24px; height: 24px;" viewBox="0 0 24 24"><path fill="' + this.colors[3] + '" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"></path></svg>';
 
     var theCalendar = document.createElement("DIV");
-    theCalendar.className = "calendar " + this.size;
+    theCalendar.className = "cjslib-calendar cjslib-size-" + this.size;
 
     document.getElementById(this.id).appendChild(theCalendar.cloneNode(true));
 
@@ -117,7 +121,7 @@ Calendar.prototype.draw = function () {
         theNames = ['year', 'month', 'labels', 'days'];
     for (var i = 0; i < theNames.length; i++) {
         theContainers[i] = document.createElement("DIV");
-        theContainers[i].className = theNames[i];
+        theContainers[i].className = "cjslib-" + theNames[i];
 
         if (theNames[i] != "days") {
             if (theNames[i] != "month") {
@@ -173,25 +177,35 @@ Calendar.prototype.draw = function () {
         theRadios = [];
     for (var i = 0; i < 6; i++) {
         theRows[i] = document.createElement("DIV");
-        theRows[i].className = "row";
+        theRows[i].className = "cjslib-row";
     }
 
     for (var i = 0, j = 0; i < 42; i++) {
         theRadios[i] = document.createElement("INPUT");
-        theRadios[i].className = "day-radios";
+        theRadios[i].className = "cjslib-day-radios";
         theRadios[i].type = "radio";
         theRadios[i].name = this.id + "-day-radios";
         theRadios[i].id = this.id + "-day-radio-" + (i + 1);
 
         theDays[i] = document.createElement("LABEL");
-        theDays[i].className = "day";
+        theDays[i].className = "cjslib-day";
         theDays[i].htmlFor = this.id + "-day-radio-" + (i + 1);
         theDays[i].id = this.id + "-day-" + (i + 1);
 
         var theText = document.createElement("SPAN");
+        theText.className = "cjslib-day-num";
         theText.id = this.id + "-day-num-" + (i + 1);
 
         theDays[i].appendChild(theText.cloneNode(true));
+
+        if (this.indicator) {
+            var theIndicator = document.createElement("SPAN");
+            theIndicator.className = "cjslib-day-indicator cjslib-indicator-pos-" + this.indicator_pos;
+                if (this.indicator_type == 1) theIndicator.className += " cjslib-indicator-type-numeric";
+            theIndicator.id = this.id + "-day-indicator-" + (i + 1);
+
+            theDays[i].appendChild(theIndicator.cloneNode(true));
+        }
 
         theRows[j].appendChild(theRadios[i].cloneNode(true));
         theRows[j].appendChild(theDays[i].cloneNode(true));
@@ -209,7 +223,7 @@ Calendar.prototype.draw = function () {
         theCalendar.appendChild(theContainers[i].cloneNode(true));
     }
 
-    document.getElementById(this.id).innerHTML = "<style>.day.active::before { background-color: " + this.colors[1] + "; } .day.today > span { border-color: " + this.colors[1] + " !important; }</style>";
+    document.getElementById(this.id).innerHTML = "<style>.cjslib-day-indicator { color: " + this.colors[1] + "; background-color: " + this.colors[1] + "; } .cjslib-indicator-type-numeric { color: " + this.colors[2] + "; } .cjslib-day.cjslib-day-today > .cjslib-day-num { border-color: " + this.colors[1] + " !important; }</style>";
     document.getElementById(this.id).appendChild(theCalendar.cloneNode(true));
 };
 
@@ -219,7 +233,7 @@ Calendar.prototype.update = function () {
 
     for (var i = 1; i <= 42; i++) {
         document.getElementById(this.id + '-day-num-' + i).innerHTML = "";
-        document.getElementById(this.id + '-day-' + i).className = this.id + " day listed";
+        document.getElementById(this.id + '-day-' + i).className = this.id + " cjslib-day cjslib-day-listed";
     }
 
     var firstDay = new Date(this.date.getFullYear(), this.date.getMonth(), 1).getDay();
@@ -234,7 +248,7 @@ Calendar.prototype.update = function () {
 
     for (var i = 0, j = previousLastDay; i < firstDayLabelPos; i++, j--) {
         document.getElementById(this.id + '-day-num-' + (firstDayLabelPos - i)).innerHTML = j;
-        document.getElementById(this.id + '-day-' + (firstDayLabelPos - i)).className = this.id + " day diluted";
+        document.getElementById(this.id + '-day-' + (firstDayLabelPos - i)).className = this.id + " cjslib-day cjslib-day-diluted";
     }
 
     for (var i = 1; i <= lastDay; i++) {
@@ -243,12 +257,12 @@ Calendar.prototype.update = function () {
         if (i == this.date.getDate()) document.getElementById(this.id + '-day-radio-' + (firstDayLabelPos + i)).checked = true;
 
         if (this.date.getMonth() == this.today.getMonth())
-            if (i == this.today.getDate()) document.getElementById(this.id + '-day-' + (firstDayLabelPos + i)).className += " today";
+            if (i == this.today.getDate()) document.getElementById(this.id + '-day-' + (firstDayLabelPos + i)).className += " cjslib-day-today";
     }
 
     for (var i = lastDay + 1, j = 1; firstDayLabelPos + i <= 42; i++, j++) {
         document.getElementById(this.id + '-day-num-' + (firstDayLabelPos + i)).innerHTML = j;
-        document.getElementById(this.id + '-day-' + (firstDayLabelPos + i)).className = this.id + " day diluted";
+        document.getElementById(this.id + '-day-' + (firstDayLabelPos + i)).className = this.id + " cjslib-day cjslib-day-diluted";
     }
 };
 
@@ -398,10 +412,10 @@ Organizer.prototype.draw = function () {
     var nextSvg = '<svg style="width: 24px; height: 24px;" viewBox="0 0 24 24"><path fill="' + this.calendar.colors[3] + '" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"></path></svg>';
 
     var theOrganizer = document.createElement("DIV");
-    theOrganizer.className = "events " + this.calendar.size;
+    theOrganizer.className = "cjslib-events cjslib-size-" + this.calendar.size;
 
     var theDate = document.createElement("DIV");
-    theDate.className = "date";
+    theDate.className = "cjslib-date";
     theDate.style.backgroundColor = this.calendar.colors[1];
     theDate.style.color = this.calendar.colors[3];
 
@@ -420,10 +434,10 @@ Organizer.prototype.draw = function () {
     theDate.appendChild(nextSlider.cloneNode(true));
 
     var theRows = document.createElement("DIV");
-    theRows.className = "rows";
+    theRows.className = "cjslib-rows";
 
     var theList = document.createElement("OL");
-    theList.className = "list";
+    theList.className = "cjslib-list";
     theList.id = this.id + "-list";
 
     theRows.appendChild(theList.cloneNode(true));
@@ -505,13 +519,18 @@ Organizer.prototype.indicateEvents = function (data) {
     var date = this.calendar.date;
 
     if (this.calendar.indicator) {
-        var allDays = document.getElementsByClassName(this.calendar.id + " day listed");
+        var allDays = document.getElementsByClassName(this.calendar.id + " cjslib-day cjslib-day-listed");
+
+        for (var i = 0; i < allDays.length; i++) {
+            allDays[i].children[1].innerHTML = "";
+        }
 
         try {
             var month = data[date.getFullYear()][date.getMonth() + 1];
 
             for (var key in month) {
-                if (month[key].length > 0) allDays[key - 1].className += " active";
+                if (month[key].length > 0)
+                    allDays[key - 1].children[1].innerHTML = (month[key].length > 9) ? "9+" : month[key].length;
             }
         } catch (e) {}
     }
