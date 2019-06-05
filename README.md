@@ -206,11 +206,19 @@ var data = {
 > Do not use this if `organizer` is not declared. Use the [Calendar OnClickListeners](#calendar-onclicklisteners) instead
 
 ```javascript
-// Days Block click listener
+// Days Block Click Listener
 organizer.setOnClickListener('days-blocks',
     // Called when a day block is clicked
     function () {
         console.log("Day block clicked");
+    }
+);
+
+// Days Block Long Click Listener
+organizer.setOnLongClickListener('days-blocks',
+    // Called when a day block is long clicked
+    function () {
+        console.log("Day block long clicked");
     }
 );
 

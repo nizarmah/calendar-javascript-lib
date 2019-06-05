@@ -436,21 +436,28 @@
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
             flex-direction: column;
-    overflow: hidden !important;
+    overflow: auto !important;
 }
 
 .cjslib-list {
     width: 100%;
-    height: 100%;
     position: relative;
-    -webkit-box-flex: 1;
-    -ms-flex: 1;
-            flex: 1;
-    overflow-y: auto !important;
+    overflow-y: visible !important;
     padding: 0;
     margin: 0;
     color: rgba(21, 21, 21, 0.94);
+    padding-bottom: 15px;
 }
+    .cjslib-list-history {
+        padding-top: 10px;
+        width: calc(100% - 20px);
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+        .cjslib-list-history > .cjslib-list-history-title {
+            padding: 5px 0px;
+            border-radius: 2px;
+        }
 
     .cjslib-list-placeholder {
         height: 100%;
@@ -465,7 +472,14 @@
                 align-items: center;
         color: #757575;
         pointer-events: none;
+        display: none;
     }
+        .cjslib-list-placeholder * {
+            pointer-events: all;
+        }
+        .cjslib-list .cjslib-list-placeholder:only-child {
+            display: block !important;
+        }
 
 .cjslib-list > li {
     width: 100%;

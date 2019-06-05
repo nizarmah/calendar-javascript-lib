@@ -22,6 +22,7 @@ function Calendar(id, size, labelSettings, colors, options) {
     var listPlaceholder = document.createElement("LI");
     listPlaceholder.className = "cjslib-list-placeholder";
     listPlaceholder.appendChild(document.createTextNode("No events on this day"));
+    listPlaceholder.style = "text-align: center; padding: 20px 0px;";
     
     this.placeholder = listPlaceholder.outerHTML;
     if (options.placeholder != undefined) this.placeholder = options.placeholder;
@@ -47,6 +48,8 @@ function Calendar(id, size, labelSettings, colors, options) {
 
     this.date = new Date();
     this.today = new Date();
+
+    this.history = [];
 
     this.draw();
     this.update();
@@ -105,6 +108,9 @@ Calendar.prototype = {
 
             return true;
         } else this.date.setDate(theDay);
+    },
+    getDateString: function getDateString() {
+        return this.months[this.date.getMonth()] + " " + this.date.getDate() + ", " + this.date.getFullYear();
     }
 };
 
@@ -329,6 +335,8 @@ function Organizer(id, calendar, data) {
     this.setOnClickListener('day-slider');
     this.setOnClickListener('month-slider');
     this.setOnClickListener('year-slider');
+
+    this.setOnLongClickListener('days-blocks');
 }
 
 Organizer.prototype = {
@@ -394,6 +402,22 @@ Organizer.prototype = {
         }
     },
     changeDateTo: function changeDateTo(theDay, theBlock) {
+        this.clearHistory();
+
+        var changedMonth = this.calendar.changeDateTo(theDay, theBlock);
+
+        var organizerInstance = this;
+        setTimeout(function () {
+            if (changedMonth) {
+                organizerInstance.onMonthChange(function () {
+                    organizerInstance.indicateEvents();
+                });
+            } else organizerInstance.update();
+        }, 1);
+    },
+    addDate: function changeDateTo(theDay, theBlock) {
+        this.showHistory();
+
         var changedMonth = this.calendar.changeDateTo(theDay, theBlock);
 
         var organizerInstance = this;
@@ -435,12 +459,18 @@ Organizer.prototype.draw = function () {
 
     var theRows = document.createElement("DIV");
     theRows.className = "cjslib-rows";
+    theRows.id = this.id + "-list-container";
 
     var theList = document.createElement("OL");
     theList.className = "cjslib-list";
     theList.id = this.id + "-list";
 
+    var theHistory = document.createElement("OL");
+    theHistory.className = "cjslib-list";
+    theHistory.id = this.id + "-history";
+
     theRows.appendChild(theList.cloneNode(true));
+    theRows.appendChild(theHistory.cloneNode(true));
 
     theOrganizer.appendChild(theDate.cloneNode(true));
     theOrganizer.appendChild(theRows.cloneNode(true));
@@ -456,9 +486,7 @@ Organizer.prototype.update = function () {
 };
 
 Organizer.prototype.list = function (data) {
-    document.getElementById(this.id + "-list").innerHTML = "";
-
-    var content = document.createElement("UL");
+    var container = document.createElement("UL");
     for (var i = 0; i < data.length; i++) {
         var listItem = document.createElement("LI");
         listItem.id = this.id + "-list-item-" + i;
@@ -479,22 +507,55 @@ Organizer.prototype.list = function (data) {
         listItem.appendChild(division);
         listItem.appendChild(paragraph);
 
-        content.appendChild(listItem);
+        container.appendChild(listItem);
     }
 
-    document.getElementById(this.id + "-list").innerHTML = content.innerHTML;
-
-    if (data.length == 0)
-        this.showPlaceholder();
+    return container.innerHTML
 };
+
+Organizer.prototype.remember = function (date, content) {
+    if (content.startsWith("<div class=\"cjslib-list-placeholder\">"))
+        return "";
+
+    var dateTitle = this.calendar.getDateString();
+    this.calendar.history.unshift(dateTitle);
+
+    var container = document.createElement("UL");
+    container.className = "cjslib-list cjslib-list-history"
+
+    var title = document.createElement("LI");
+    title.appendChild(document.createTextNode(dateTitle));
+    title.className = "cjslib-list-history-title cjslib-date";
+    title.style.backgroundColor = this.calendar.colors[1];
+    title.style.color = this.calendar.colors[3];
+
+    container.appendChild(title);
+
+    container.innerHTML += content;
+
+    return container.outerHTML;
+};
+
+Organizer.prototype.clearHistory = function () {
+    this.calendar.history = [];
+    document.getElementById(this.id + "-history").innerHTML = "";
+}
 
 Organizer.prototype.setupBlock = function (blockId, organizerInstance, callback) {
     var calendarInstance = organizerInstance.calendar;
 
     document.getElementById(calendarInstance.id + "-day-" + blockId).onclick = function () {
         if (document.getElementById(calendarInstance.id + "-day-num-" + blockId).innerHTML.length > 0) {
-            organizerInstance.changeDateTo(document.getElementById(calendarInstance.id + "-day-num-" + blockId).innerHTML, blockId);
-            callback();
+            if (document.getElementById(calendarInstance.id + "-day-radio-" + blockId).checked)
+                return;
+
+            var longPressed = "" + document.getElementById(calendarInstance.id + "-day-num-" + blockId).dataset.longpressed;
+            document.getElementById(calendarInstance.id + "-day-num-" + blockId).dataset.longpressed = false;
+
+            if (longPressed != "true") {
+                organizerInstance.changeDateTo(document.getElementById(calendarInstance.id + "-day-num-" + blockId).innerHTML, blockId);
+                callback();
+            }
         }
     };
 };
@@ -503,16 +564,44 @@ Organizer.prototype.showEvents = function (data) {
     data = data || this.data;
     var date = this.calendar.date;
 
+    var content = "";
+    var history = "";
     try {
-        this.list(data[date.getFullYear()][date.getMonth() + 1][date.getDate()]);
+        var historyIndex = this.calendar.history.indexOf(this.calendar.getDateString());
+        if (historyIndex > -1) {
+            this.calendar.history.splice(historyIndex, 1);
+            document.getElementById(this.id + "-history").children[historyIndex].remove();
+        }
+
+        history += 
+        history += document.getElementById(this.id + "-list").innerHTML;
+
+        content = this.list(data[date.getFullYear()][date.getMonth() + 1][date.getDate()]);
     } catch (e) {
-        this.showPlaceholder();
+        content = this.showPlaceholder();
     }
+
+    document.getElementById(this.id + "-list").innerHTML = content;
+};
+
+Organizer.prototype.showHistory = function (data) {
+    data = data || this.data;
+    var date = this.calendar.date;
+
+    var content = this.remember(date, document.getElementById(this.id + "-list").innerHTML);
+    var history = document.getElementById(this.id + "-history").innerHTML;
+
+    document.getElementById(this.id + "-history").innerHTML = content + history;
 };
 
 Organizer.prototype.showPlaceholder = function (data) {
-    document.getElementById(this.id + "-list").innerHTML = this.calendar.placeholder;
-}
+    var container = document.createElement("DIV");
+    container.className = "cjslib-list-placeholder";
+
+    container.innerHTML = this.calendar.placeholder;
+
+    return container.outerHTML;
+};
 
 Organizer.prototype.indicateEvents = function (data) {
     data = data || this.data;
@@ -589,3 +678,46 @@ Organizer.prototype.setOnClickListener = function (theCase, backCallback, nextCa
             break;
     }
 };
+
+Organizer.prototype.setupLongClickBlock = function (blockId, organizerInstance, callback) {
+    var calendarInstance = organizerInstance.calendar;
+
+    var mouseDownEvent = function () {
+        document.getElementById(calendarInstance.id + "-day-num-" + blockId).dataset.longpressed = "-";
+
+        window.setTimeout(function () {
+            if (document.getElementById(calendarInstance.id + "-day-num-" + blockId).innerHTML.length > 0) {
+                if (document.getElementById(calendarInstance.id + "-day-num-" + blockId).dataset.longpressed == "false")
+                    return;
+                else document.getElementById(calendarInstance.id + "-day-num-" + blockId).dataset.longpressed = true;
+
+                if (document.getElementById(calendarInstance.id + "-day-radio-" + blockId).checked)
+                    return;
+
+                organizerInstance.addDate(document.getElementById(calendarInstance.id + "-day-num-" + blockId).innerHTML, blockId);
+                callback();
+            }
+        }, 1000);
+    };
+
+    document.getElementById(calendarInstance.id + "-day-" + blockId).onmousedown = mouseDownEvent;
+    document.getElementById(calendarInstance.id + "-day-" + blockId).ontouchstart = mouseDownEvent;
+};
+
+Organizer.prototype.setOnLongClickListener = function (theCase, backCallback, nextCallback) {
+    var calendarId = this.calendar.id;
+    var organizerId = this.id;
+
+    backCallback = backCallback || function () {};
+    nextCallback = nextCallback || function () {};
+
+    var organizerInstance = this;
+
+    switch (theCase) {
+        case "days-blocks":
+            for (var i = 1; i <= 42; i++) {
+                organizerInstance.setupLongClickBlock(i, organizerInstance, backCallback);
+            }
+            break;
+    }
+}
