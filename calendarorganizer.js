@@ -31,11 +31,10 @@ function Calendar(id, size, labelSettings, colors, options) {
     if (options.months != undefined && options.months.length == 12) months = options.months;
 
     var label = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    this.defaultLabels = label;
-
     if (options.days != undefined && options.days.length == 7) label = options.days;
 
     this.months = months;
+    this.defaultLabels = label;
 
     this.label = [];
     this.labels = [];
