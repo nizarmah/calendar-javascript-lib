@@ -26,6 +26,9 @@ There are multiple ways to install the calendar library
 </head>
 
 <body>
+    <div id="calendarContainer"></div>
+    <div id="organizerContainer"></div>
+
     <!-- Stick script at the end of the body -->
     <script src="https://cdn.rawgit.com/nizarmah/calendar-javascript-lib/master/calendarorganizer.min.js"></script>
     <script>
@@ -62,7 +65,7 @@ Place 2 `<div>`'s where you want the calendar to be placed
 // Basic config
 var calendar = new Calendar("calendarContainer", "small",
                             [ "Monday", 3 ],
-                            [ "#ffc107", "#ffa000", "#ffffff", "#ffecb3" ]
+                            [ "#ffc107", "#ffa000", "#ffffff", "#ffecb3" ],
                             {
                                 days: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",  "Saturday" ],
                                 months: [ "January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
@@ -81,7 +84,8 @@ var data = {
                         }
                     ]
                 }
-            };
+            }
+        };
 
 var organizer = new Organizer("organizerContainer", calendar, data);
 ```
