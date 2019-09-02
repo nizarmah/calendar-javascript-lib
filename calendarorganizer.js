@@ -484,6 +484,13 @@ Organizer.prototype.update = function () {
     this.showEvents();
 };
 
+Organizer.prototype.updateData = function (data) {
+    this.data = data;
+
+    this.indicateEvents();
+    this.update();
+};
+
 Organizer.prototype.list = function (data) {
     var container = document.createElement("UL");
     for (var i = 0; i < data.length; i++) {
