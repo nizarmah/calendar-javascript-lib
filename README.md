@@ -167,7 +167,8 @@ var organizer = new Organizer("organizerContainer", // Organizer container id   
 {
     startTime: "00:00",
     endTime: "24:00",
-    text: "Christmas Day"
+    text: "Christmas Day",
+    link: "https://github.com/nizarmah" // this is optional :)
 }
 ```
 > Since starting and ending time are strings, 24 hour time is not required. You can just use "12:00am" and "12:00pm" instead of "00:00" and "24:00"

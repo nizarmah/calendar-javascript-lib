@@ -508,7 +508,19 @@ Organizer.prototype.list = function (data) {
 
         var paragraph = document.createElement("P");
         paragraph.id = this.id + "-list-item-" + i + "-text";
-        paragraph.appendChild(document.createTextNode(data[i].text));
+
+        var textNode = document.createTextNode(data[i].text);
+         if (data[i].link == undefined || data[i].link == "") {
+            paragraph.appendChild(textNode);
+        } else {
+            var link = document.createElement("A");
+            link.href = data[i].link;
+            link.target = "_blank";
+            link.class = this.id + " link";
+            link.appendChild(textNode);
+
+            paragraph.appendChild(link);
+        }
 
         listItem.appendChild(division);
         listItem.appendChild(paragraph);
