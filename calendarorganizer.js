@@ -33,6 +33,14 @@ function Calendar(id, size, labelSettings, colors, options) {
     var label = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     if (options.days != undefined && options.days.length == 7) label = options.days;
 
+    if (options.custom_date != undefined) {
+        this.date = options.custom_date;
+    }
+    else{
+        this.date = new Date();
+    }
+    this.selected_date = new Date(this.date);
+    this.today = new Date();
     this.months = months;
     this.defaultLabels = label;
 
@@ -45,8 +53,6 @@ function Calendar(id, size, labelSettings, colors, options) {
         this.labels.push(this.label[i].substring(0, labelSettings[1] > 3 ? 3 : labelSettings[1]));
     }
 
-    this.date = new Date();
-    this.today = new Date();
 
     this.history = [];
 
@@ -239,6 +245,7 @@ Calendar.prototype.update = function () {
     for (var i = 1; i <= 42; i++) {
         document.getElementById(this.id + '-day-num-' + i).innerHTML = "";
         document.getElementById(this.id + '-day-' + i).className = this.id + " cjslib-day cjslib-day-listed";
+        document.getElementById(this.id + '-day-radio-' + i).checked = false;
     }
 
     var firstDay = new Date(this.date.getFullYear(), this.date.getMonth(), 1).getDay();
@@ -259,7 +266,9 @@ Calendar.prototype.update = function () {
     for (var i = 1; i <= lastDay; i++) {
         document.getElementById(this.id + '-day-num-' + (firstDayLabelPos + i)).innerHTML = i;
 
-        if (i == this.date.getDate()) document.getElementById(this.id + '-day-radio-' + (firstDayLabelPos + i)).checked = true;
+        if ((i == this.date.getDate()) && (this.selected_date.getMonth() == this.date.getMonth())) {
+            document.getElementById(this.id + '-day-radio-' + (firstDayLabelPos + i)).checked = true;
+        }
 
         if (this.date.getMonth() == this.today.getMonth())
             if (i == this.today.getDate()) document.getElementById(this.id + '-day-' + (firstDayLabelPos + i)).className += " cjslib-day-today";
@@ -702,6 +711,7 @@ Organizer.prototype.setupLongClickBlock = function (blockId, organizerInstance, 
 
     var mouseDownEvent = function () {
         document.getElementById(calendarInstance.id + "-day-num-" + blockId).dataset.longpressed = "-";
+        calendarInstance.selected_date = new Date(calendarInstance.date);
 
         window.setTimeout(function () {
             if (document.getElementById(calendarInstance.id + "-day-num-" + blockId).innerHTML.length > 0) {
