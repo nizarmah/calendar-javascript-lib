@@ -68,7 +68,7 @@ var calendar = new Calendar("calendarContainer", "small",
                             [ "#ffc107", "#ffa000", "#ffffff", "#ffecb3" ],
                             {
                                 days: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",  "Saturday" ],
-                                months: [ "January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
+                                months: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
                                 indicator: false,
                                 placeholder: "<span>Custom Placeholder</span>"
                             });
@@ -107,7 +107,7 @@ var calendar = new Calendar("calendarContainer",         // HTML container ID,  
                               "#ffecb3" ],               // Text Dark Color                                                                        Required
                             { // Following is optional
                                 days: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",  "Saturday" ],
-                                months: [ "January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
+                                months: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
                                 indicator: true,         // Day Event Indicator                                                                    Optional
                                 indicator_type: 1,       // Day Event Indicator Type (0 not to display num of events, 1 to display num of events)  Optional
                                 indicator_pos: "bottom", // Day Event Indicator Position (top, bottom)                                             Optional
